@@ -20,7 +20,7 @@ Subcommands:
 
 [//]: # (<br>)
 
-### Installation
+### Installation:
 Simply install with `pip install mp3art`.
 
 <br>
