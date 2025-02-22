@@ -1,42 +1,41 @@
-from sys import argv
+import argparse
+from pathlib import Path
 
 
-# EXAMPLES:
-# mp3art --add <mp3 file> <cover art>
-# mp3art --remove <mp3 file>
-USAGE_MESSAGE = "Usage: mp3art (--add | --remove) <mp3 file> [cover art]"
-# USAGE_MESSAGE = ("Usage:\n"
-#                  "mp3art --add <mp3 file> <cover art>\n"
-#                  "mp3art --remove <mp3 file>")
+def validate_path(path):
+    return True
 
 
-def print_padded(text):
-    print("\n" + text + "\n")
+def add_cover(args):
+    mp3_path = args.mp3
+    cover_path = args.cover
+    print(mp3_path, cover_path)
+    # print("adding cover %s to %s".format(cover_path, mp3_path))
+
+
+def remove_cover(args):
+    mp3_path = args.mp3
+    print(mp3_path)
+    # print("removing cover from %s".format(mp3_path))
 
 
 def run():
-    if len(argv) == 1 or "-h" in argv:
-        print("help")
-        return
+    parser = argparse.ArgumentParser(prog="mp3art",
+                                     description="Add or remove cover art to MP3 files.")
 
-    if not 3 <= len(argv) <= 4:
-        print_padded("Incorrect usage!\n" + USAGE_MESSAGE)
-        return
+    subparsers = parser.add_subparsers(title="Subcommands",
+                                       description="Which operation to perform.",
+                                       help="Add or remove cover art for an MP3 file.",
+                                       required=True)
 
+    add_parser = subparsers.add_parser("add", help="Add cover art to an MP3 file.")
+    add_parser.add_argument("mp3", type=Path, help="Path to the MP3 file.")
+    add_parser.add_argument("cover", type=Path, help="Path to the cover art file.")
+    add_parser.set_defaults(func=add_cover)
 
-# USAGE_MESSAGE = "Usage: pwdf <file>"
-#
-#
-# def run():
-#     if len(argv) != 2:
-#         print(USAGE_MESSAGE)
-#         return
-#
-#     file_path = argv[1]
-#     if not path.isfile(file_path):
-#         print("ERROR: The file specified could not be found.")
-#         print(USAGE_MESSAGE)
-#         return
-#
-#     abs_path = path.abspath(file_path)
-#     print(abs_path)
+    remove_parser = subparsers.add_parser("remove", help="Remove cover art to an MP3 file.")
+    remove_parser.add_argument("mp3", type=Path, help="Path to the MP3 file.")
+    remove_parser.set_defaults(func=remove_cover)
+
+    args = parser.parse_args()
+    args.func(args)
