@@ -1,5 +1,7 @@
 import argparse
 from pathlib import Path
+from mutagen.mp3 import MP3
+import mutagen.id3
 
 
 VALID_AUDIO_EXTENSIONS = [".mp3"]
@@ -25,25 +27,43 @@ def validate_path(file_path: Path, is_audio_path: bool):
 
 
 def add_cover(args):
-    mp3_path = args.mp3
-    cover_path = args.cover
-    print(mp3_path, cover_path)
+    mp3_path: Path = args.mp3
+    cover_path: Path = args.cover
 
     if not validate_path(mp3_path, True) or not validate_path(cover_path, False):
-        return False
+        return
 
-    print("AAAA")
+    mp3 = MP3(mp3_path)
+    if mp3.tags is None:
+        mp3.add_tags()
+
+    mp3.tags.add(
+        mutagen.id3.APIC(
+            encoding=3,  # encoding 3 is UTF-8
+            mime="image/png",
+            type=3,  # type 3 is cover art
+            # desc=f'Cover art of {mp3_path.name}.',
+            data=open(cover_path, mode="rb").read()
+        )
+    )
+
+    mp3.save()
+
+    print(f'Successfully added cover art to "{mp3_path.name}"!')
 
 
 
 def remove_cover(args):
     mp3_path = args.mp3
-    print(mp3_path)
 
     if not validate_path(mp3_path, True):
         return False
 
-    print("A")
+    mp3 = MP3(mp3_path)
+    
+    # print(mp3.get("APIC:"))
+    # print(mp3.ID3.getall("APIC:"))
+    # print(mp3.ID3.delall("APIC"))
 
 
 
