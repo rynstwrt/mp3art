@@ -4,8 +4,7 @@ import mutagen.id3
 
 
 VALID_AUDIO_EXTENSIONS = [".mp3"]
-VALID_IMAGE_EXTENSIONS = [".png"]
-
+VALID_IMAGE_EXTENSIONS = [".png", ".jpg", ".jpeg"]
 
 
 def validate_path(file_path: Path, is_audio_path: bool):
@@ -24,7 +23,6 @@ def validate_path(file_path: Path, is_audio_path: bool):
     return True
 
 
-
 def add_cover(args):
     mp3_path: Path = args.mp3
     cover_path: Path = args.cover
@@ -32,11 +30,12 @@ def add_cover(args):
     if not validate_path(mp3_path, True) or not validate_path(cover_path, False):
         return
 
+    cover_art_mime_type = "image/png" if cover_path.suffix.lower() == ".png" else "image/jpeg"
     cover_art = mutagen.id3.APIC(
         encoding=3,  # encoding 3 is UTF-8
-        mime="image/png",
+        mime=cover_art_mime_type,
         type=3,  # type 3 is cover art
-        # desc=f'Cover art of {mp3_path.name}.',
+        # desc=f'Cover art.',
         data=open(cover_path, mode="rb").read()
     )
 
@@ -46,7 +45,6 @@ def add_cover(args):
     audio.save()
 
     print(f'Successfully added cover art to "{mp3_path.name}"!')
-
 
 
 def remove_cover(args):
@@ -60,7 +58,6 @@ def remove_cover(args):
     audio.save()
 
     print(f'Successfully removed cover art for "{mp3_path.name}"!')
-
 
 
 def run():
