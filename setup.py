@@ -16,7 +16,7 @@ long_description = (Path(__file__).parent / "README.md").read_text()
 
 setup(
     name='mp3art',
-    version='1.0.1',
+    version='1.0.2',
     description=' A terminal command to add or remove art to MP3 files.',
     url='https://github.com/rynstwrt/mp3art',
     author='rynstwrt',
