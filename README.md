@@ -18,7 +18,7 @@ Subcommands:
     remove      Remove cover art to an MP3 file.
 ```
 
-<br>
+[//]: # (<br>)
 
 ### Installation
 Simply install with `pip install mp3art`.
