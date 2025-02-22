@@ -1,7 +1,5 @@
 # MP3Art
-A python module terminal command to add or remove cover art to MP3 files.
-
-**Installation:** `pip install mp3art`
+A python module terminal command to add or remove cover art for MP3 files.
 
 
 ```
@@ -20,7 +18,12 @@ Subcommands:
     remove      Remove cover art to an MP3 file.
 ```
 
-<br>
+[//]: # (<br>)
+
+## Installation
+Simply install with `pip install mp3art`.
+
+[//]: # (<br>)
 
 ## Add Cover Art
 ```
@@ -34,7 +37,7 @@ options:
   -h, --help  show this help message and exit
 ```
 
-<br>
+[//]: # (<br>)
 
 ## Remove Cover Art
 ```
@@ -49,6 +52,6 @@ options:
 
 <br>
 
-### Links
+### Links:
 - GitHub: https://github.com/rynstwrt/mp3art
 - PyPi: https://pypi.org/project/mp3art
