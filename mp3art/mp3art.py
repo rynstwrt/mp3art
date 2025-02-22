@@ -1,6 +1,5 @@
 import argparse
 from pathlib import Path
-from mutagen.mp3 import MP3
 import mutagen.id3
 
 
@@ -33,21 +32,18 @@ def add_cover(args):
     if not validate_path(mp3_path, True) or not validate_path(cover_path, False):
         return
 
-    mp3 = MP3(mp3_path)
-    if mp3.tags is None:
-        mp3.add_tags()
-
-    mp3.tags.add(
-        mutagen.id3.APIC(
-            encoding=3,  # encoding 3 is UTF-8
-            mime="image/png",
-            type=3,  # type 3 is cover art
-            # desc=f'Cover art of {mp3_path.name}.',
-            data=open(cover_path, mode="rb").read()
-        )
+    cover_art = mutagen.id3.APIC(
+        encoding=3,  # encoding 3 is UTF-8
+        mime="image/png",
+        type=3,  # type 3 is cover art
+        # desc=f'Cover art of {mp3_path.name}.',
+        data=open(cover_path, mode="rb").read()
     )
 
-    mp3.save()
+    audio = mutagen.id3.ID3(mp3_path)
+    audio.delall("APIC")
+    audio.add(cover_art)
+    audio.save()
 
     print(f'Successfully added cover art to "{mp3_path.name}"!')
 
@@ -59,11 +55,11 @@ def remove_cover(args):
     if not validate_path(mp3_path, True):
         return False
 
-    mp3 = MP3(mp3_path)
-    
-    # print(mp3.get("APIC:"))
-    # print(mp3.ID3.getall("APIC:"))
-    # print(mp3.ID3.delall("APIC"))
+    audio = mutagen.id3.ID3(mp3_path)
+    audio.delall("APIC")
+    audio.save()
+
+    print(f'Successfully removed cover art for "{mp3_path.name}"!')
 
 
 
