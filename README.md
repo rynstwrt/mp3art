@@ -47,5 +47,6 @@ options:
 
 <br>
 
-### Other Links
-- PyPi: https://pypi.org/project/mp3art/
+### Links
+- GitHub: https://github.com/rynstwrt/mp3art
+- PyPi: https://pypi.org/project/mp3art
